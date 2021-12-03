@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpwebdeploy
+spec:
+  replicas: 7
+  selector:
+    matchLabels:
+      env: phpfrontend
+  template:
+    metadata:
+      name: phpfrontend-pod
+      labels:
+        env: phpfrontend
+    spec:
+      volumes:
+        - name: phpf-vol
+          persistentVolumeClaim:
+            claimName: phpfpvc
+      containers:
+      - name: frontend
+        image: aftherin01/phpwebproject:phpwebv1
+        volumeMounts:
+          - mountPath: /var/www/html
+            name: phpf-vol

@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+    php-apache-environment:
+        container_name: php-apache
+        build:
+            context: ./php
+            dockerfile: Dockerfile
+        depends_on:
+            - mysqlphp
+        volumes:
+            - ./php/src:/var/www/html/
+        ports:
+            - 8000:80
+    mysqlphp:
+        container_name: mysqlphp
+        image: mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: papeleria
+            MYSQL_USER: aftherin
+            MYSQL_PASSWORD: password
+        ports:
+            - "9906:3306"
+        volumes:
+            - ./php/src/Sql_scripts/CreateTable.sql:/CreateTable.sql

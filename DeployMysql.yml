@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysqldeploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      env: productomysql
+  template:
+    metadata:
+      name: mysqlpod
+      labels:
+        env: productomysql
+    spec:
+      volumes:
+        - name: mysqlvol
+          persistentVolumeClaim:
+            claimName: mysqlpvc
+      containers:
+      - name: database
+        image: aftherin01/phpwebproject:mysqlv1
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: mysqlvol
